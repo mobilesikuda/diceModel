@@ -1,5 +1,6 @@
 package ru.sikuda.mobile.dicemodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +20,9 @@ class DiceRollViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(DiceUiState())
     val uiState: StateFlow<DiceUiState> = _uiState.asStateFlow()
 
+    var uiData = mutableStateOf(DiceUiState())
+        private set
+
 
     // Handle business logic
     fun rollDice() {
@@ -29,5 +33,11 @@ class DiceRollViewModel : ViewModel() {
                 numberOfRolls = currentState.numberOfRolls + 1,
             )
         }
+        uiData.value = DiceUiState(
+            firstDieValue = Random.nextInt(from = 1, until = 7),
+            secondDieValue = Random.nextInt(from = 1, until = 7),
+            numberOfRolls = uiData.value.numberOfRolls + 1,
+        )
+
     }
 }

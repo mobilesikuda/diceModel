@@ -1,7 +1,6 @@
 package ru.sikuda.mobile.dicemodel
 
 import android.os.Bundle
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -14,12 +13,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sikuda.mobile.dicemodel.ui.theme.DiceModelTheme
 
@@ -46,14 +45,20 @@ class MainActivity : ComponentActivity() {
 fun DiceRollScreen(
     viewModel: DiceRollViewModel = viewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    //val value = viewModel.uiState.collectAsState(initial = "")
+
+    //Three custom state for update
+    //val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsState()
+    //val uiState by viewModel.uiData
+
 
     val firstDieValue = if (uiState.firstDieValue == null) "" else uiState.firstDieValue.toString()
-    val secondDieValue = if (uiState.secondDieValue == null) "" else uiState.secondDieValue.toString()
+    val secondDieValue =
+        if (uiState.secondDieValue == null) "" else uiState.secondDieValue.toString()
 
     // Update UI elements
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
